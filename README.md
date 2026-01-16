@@ -79,7 +79,7 @@ Business Registration Flow
 3. Address field triggers geocoding via LocationIQ API
 4. Map automatically centers on business location
 5. User submits form
-6. Business data sent to backend API (localhost:3000/businesses)
+6. Business data sent to backend API 
 7. New marker appears on map for registered business
 8. Success notification displayed
    
@@ -108,7 +108,7 @@ Purpose: Convert addresses to latitude/longitude coordinates
 Environment Variable: VITE_APP_LOCATIONIQ_KEY
 Usage: Automatic address validation during business registration
 Backend REST API
-Endpoint: http://localhost:3000/businesses
+Endpoint: 
 Method: POST
 Purpose: Store registered business data
 Payload: Business name, address, coordinates, website, review link
