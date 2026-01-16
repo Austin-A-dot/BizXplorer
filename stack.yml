@@ -1,0 +1,24 @@
+version: '3'
+services:
+  playground-austin-spa: #EDIT THIS
+    image: $CI_REGISTRY_IMAGE:$DOCKER_TAG
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.${ECS_APPLICATION_TAG}_${ECS_COMPONENT_TAG}.rule=(Host(`$DOMAIN`) && PathPrefix(`$SERVICE_PATH`) && Method(`GET`))  
+      - traefik.http.routers.${ECS_APPLICATION_TAG}_${ECS_COMPONENT_TAG}.middlewares=${ECS_APPLICATION_TAG}_${ECS_COMPONENT_TAG}_mw1@ecs
+      - traefik.http.routers.${ECS_APPLICATION_TAG}_${ECS_COMPONENT_TAG}.entrypoints=web, websecure
+      - traefik.http.services.${ECS_APPLICATION_TAG}_${ECS_COMPONENT_TAG}.loadbalancer.server.port=8080
+      - traefik.http.services.${ECS_APPLICATION_TAG}_${ECS_COMPONENT_TAG}.loadbalancer.healthcheck.interval=15s
+      - traefik.http.services.${ECS_APPLICATION_TAG}_${ECS_COMPONENT_TAG}.loadbalancer.healthcheck.path=/favicon.ico
+      - traefik.http.services.${ECS_APPLICATION_TAG}_${ECS_COMPONENT_TAG}.loadbalancer.healthcheck.scheme=http
+      - traefik.http.services.${ECS_APPLICATION_TAG}_${ECS_COMPONENT_TAG}.loadbalancer.healthcheck.timeout=10s
+      - traefik.http.middlewares.${ECS_APPLICATION_TAG}_${ECS_COMPONENT_TAG}_mw1.stripprefix.prefixes=${SERVICE_PATH}
+    ports:
+      - "0:8080"
+    logging:
+      driver: awslogs
+      options:
+        awslogs-group: ${ECS_CLUSTER_ENV}-${ECS_LOG_GROUP}
+        awslogs-region: af-south-1
+        awslogs-stream-prefix: spa 
+

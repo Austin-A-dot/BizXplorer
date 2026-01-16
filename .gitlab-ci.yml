@@ -1,0 +1,35 @@
+include:
+  - component: $CI_SERVER_FQDN/DevOps/ci-templates/spa/vue-vite-app@3.0
+  - component: $CI_SERVER_FQDN/DevOps/ci-templates/aws/ecs@3.0
+
+variables:
+  PLATFORM_VERSION: 20
+  SERVICE_NAME: 'playground-austin-spa' 
+  ECS_PROJECT_NAME: 'playground-austin-spa' 
+  ECS_APPLICATION_TAG: 'playground' 
+  ECS_LOG_GROUP: 'training-playground' 
+  ECS_COMPONENT_TAG: 'austin-spa'
+
+  SERVICE_PATH: '/austin' 
+  PROJECT_NAME: 'playground-austin-spa'
+
+.dev-variables:
+  variables:
+    MODE: development-staging
+    ECS_CLUSTER_ENV: development
+    ECS_MEM_RESERVATION: 128M
+    ECS_MEM_LIMIT: 128M
+
+.stg-variables:
+  variables:
+    MODE: qa-staging
+    ECS_CLUSTER_ENV: staging
+    ECS_MEM_RESERVATION: 128M
+    ECS_MEM_LIMIT: 128M
+
+.prod-variables:
+  variables:
+    MODE: production
+    ECS_CLUSTER_ENV: production-internal
+    ECS_MEM_RESERVATION: 256M
+    ECS_MEM_LIMIT: 256M
